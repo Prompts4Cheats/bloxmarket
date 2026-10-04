@@ -1,98 +1,150 @@
 <!DOCTYPE html>
-                </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloxMarket - Premium Robux Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cardBg: '#121214',
+                        cardBorder: '#27272a',
+                        accentRed: '#ef4444',
+                        accentRedHover: '#dc2626'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .glow-red-hover:hover {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-black text-zinc-100 min-h-screen font-sans antialiased flex flex-col items-center justify-start p-4 sm:p-8">
 
-                <!-- NEW: Logo Added Here -->
-                <div class="text-center mb-6">
-                    <img src="logo.png" alt="BloxMarket Logo" class="w-32 h-auto mx-auto mb-2">
-                </div>
+    <!-- Main Container Wrapper -->
+    <div class="w-full max-w-xl space-y-6">
 
-                <!-- NEW: Custom Robux Calculator Widget (Above 5k) -->
-                <div class="bg-cardBg border border-accentRed/50 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-accentRed text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Custom Amount</div>
-                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                        <span class="text-accentRed">🧮</span> Custom Robux Calculator (5,000+ Min)
-                    </h3>
-                    <p class="text-xs text-zinc-400 mb-5">Enter any specific amount above 5,000 Robux to instantly calculate your custom price ($3.00 / 1K rate).</p>
+        <!-- Logo Image Added Here -->
+        <div class="text-center pt-4">
+            <img src="logo.png" alt="BloxMarket Logo" class="w-28 h-auto mx-auto mb-2 rounded-xl">
+            <h1 class="text-xl font-black tracking-wider text-white">BloxMarket</h1>
+        </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Robux Amount</label>
-                            <div class="relative">
-                                <input type="number" id="custom-robux-input" min="5000" step="500" value="12500" oninput="calculateCustomPrice()" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm font-bold focus:outline-none focus:border-accentRed">
-                                <span class="absolute right-4 top-3 text-xs text-zinc-500 font-bold">ROBUX</span>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Calculated Price</label>
-                            <div class="bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 flex items-center justify-between">
-                                <span id="custom-price-display" class="text-xl font-black text-accentRed">$37.50</span>
-                                <span class="text-xs text-zinc-400 font-mono">Tax Covered</span>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Custom Robux Calculator Widget (Above 5k) -->
+        <div class="bg-cardBg border border-accentRed/50 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-accentRed text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Custom Amount</div>
+            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <span class="text-accentRed">🧮</span> Custom Robux Calculator (5,000+ Min)
+            </h3>
+            <p class="text-xs text-zinc-400 mb-5">Enter any specific amount above 5,000 Robux to instantly calculate your custom price ($3.00 / 1K rate).</p>
 
-                    <button onclick="buyCustomAmount()" class="w-full bg-accentRed hover:bg-accentRedHover text-white py-3.5 rounded-xl font-bold text-sm transition glow-red-hover flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cart-shopping"></i> Buy Custom Amount Now
-                    </button>
-                </div>
-
-                <!-- Halloween Specials Section -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
                 <div>
-                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <span class="text-orange-500">🎃</span> Halloween Offers
-                    </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-cardBg border border-orange-500/40 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden group hover:border-accentRed transition shadow-lg">
-                            <div class="absolute top-0 right-0 bg-orange-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Halloween Special</div>
-                            <div>
-                                <h4 class="font-extrabold text-white text-base mb-1">Headless Horseman Speciale</h4>
-                                <p class="text-xs text-orange-300 font-semibold mb-4">31k Robux Tax Covered</p>
-                            </div>
-                            <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
-                                <span class="text-xl font-black text-white">$50.00</span>
-                                <button onclick="selectPackage('Headless Horseman Speciale', 50, '31k Robux Tax Covered')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
-                                    Buy Now
-                                </button>
-                            </div>
-                        </div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Robux Amount</label>
+                    <div class="relative">
+                        <input type="number" id="custom-robux-input" min="5000" step="500" value="12500" oninput="calculateCustomPrice()" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm font-bold focus:outline-none focus:border-accentRed">
+                        <span class="absolute right-4 top-3 text-xs text-zinc-500 font-bold">ROBUX</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Calculated Price</label>
+                    <div class="bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 flex items-center justify-between">
+                        <span id="custom-price-display" class="text-xl font-black text-accentRed">$37.50</span>
+                        <span class="text-xs text-zinc-400 font-mono">Tax Covered</span>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="bg-cardBg border border-orange-500/40 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden group hover:border-accentRed transition shadow-lg">
-                            <div class="absolute top-0 right-0 bg-orange-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Halloween Bundle</div>
-                            <div>
-                                <h4 class="font-extrabold text-white text-base mb-1">Headless Horseman + Korblox Deathspeaker</h4>
-                                <p class="text-xs text-orange-300 font-semibold mb-4">48k Robux Tax Covered</p>
-                            </div>
-                            <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
-                                <span class="text-xl font-black text-white">$60.00</span>
-                                <button onclick="selectPackage('Headless + Korblox Deathspeaker', 60, '48k Robux Tax Covered')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
-                                    Buy Now
-                                </button>
-                            </div>
-                        </div>
+            <button onclick="buyCustomAmount()" class="w-full bg-accentRed hover:bg-accentRedHover text-white py-3.5 rounded-xl font-bold text-sm transition glow-red-hover flex items-center justify-center gap-2">
+                <i class="fa-solid fa-cart-shopping"></i> Buy Custom Amount Now
+            </button>
+        </div>
+
+        <!-- Halloween Specials Section -->
+        <div>
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <span class="text-orange-500">🎃</span> Halloween Offers
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-cardBg border border-orange-500/40 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden group hover:border-accentRed transition shadow-lg">
+                    <div class="absolute top-0 right-0 bg-orange-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Halloween Special</div>
+                    <div>
+                        <h4 class="font-extrabold text-white text-base mb-1">Headless Horseman Speciale</h4>
+                        <p class="text-xs text-orange-300 font-semibold mb-4">31k Robux Tax Covered</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
+                        <span class="text-xl font-black text-white">$50.00</span>
+                        <button onclick="selectPackage('Headless Horseman Speciale', 50, '31k Robux Tax Covered')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                            Buy Now
+                        </button>
                     </div>
                 </div>
 
-                <!-- Standard Robux Rates List -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-6">
-                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <span class="text-accentRed">🪙</span> Current Robux Rates
-                    </h3>
-                    
-                    <div class="space-y-3">
-                        <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-accentRed font-bold">🪙</div>
-                                <div>
-                                    <h4 class="font-bold text-white">15,000 Robux</h4>
-                                    <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <span class="text-lg font-black text-white">$45.00</span>
-                                <button onclick="selectPackage('15,000 Robux', 45, '15,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
-                                    Buy Now
-                                </button>
-                            </div>
-                        </div>
+                <div class="bg-cardBg border border-orange-500/40 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden group hover:border-accentRed transition shadow-lg">
+                    <div class="absolute top-0 right-0 bg-orange-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Halloween Bundle</div>
+                    <div>
+                        <h4 class="font-extrabold text-white text-base mb-1">Headless Horseman + Korblox Deathspeaker</h4>
+                        <p class="text-xs text-orange-300 font-semibold mb-4">48k Robux Tax Covered</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
+                        <span class="text-xl font-black text-white">$60.00</span>
+                        <button onclick="selectPackage('Headless + Korblox Deathspeaker', 60, '48k Robux Tax Covered')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                            Buy Now
+                        </button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Standard Robux Rates List -->
+        <div class="bg-cardBg border border-cardBorder rounded-2xl p-6">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <span class="text-accentRed">🪙</span> Current Robux Rates
+            </h3>
+            
+            <div class="space-y-3">
+                <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-accentRed font-bold">🪙</div>
+                        <div>
+                            <h4 class="font-bold text-white">15,000 Robux</h4>
+                            <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-lg font-black text-white">$45.00</span>
+                        <button onclick="selectPackage('15,000 Robux', 45, '15,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                            Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function calculateCustomPrice() {
+            const input = document.getElementById('custom-robux-input').value;
+            const price = (input / 1000) * 3.00;
+            document.getElementById('custom-price-display').innerText = '$' + price.toFixed(2);
+        }
+        function selectPackage(name, price, desc) {
+            alert('Selected: ' + name + ' for $' + price);
+        }
+        function buyCustomAmount() {
+            const amount = document.getElementById('custom-robux-input').value;
+            alert('Buying custom amount: ' + amount + ' Robux');
+        }
+    </script>
+</body>
+</html>
