@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blox Market - Premium Roblox Store</title>
+    <title>Blox Market™ - Premium Roblox Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script>
@@ -33,341 +33,1061 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-accentRed selection:text-white">
+<body class="min-h-screen flex flex-col selection:bg-accentRed selection:text-white">
 
-    <!-- Header / Navbar -->
-    <header class="content-layer border-b border-cardBorder bg-cardBg/50 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-accentRed flex items-center justify-center glow-red text-white font-black text-xl">
-                    BM
-                </div>
-                <span class="text-xl font-bold tracking-wider text-white">BLOX<span class="text-accentRed">MARKET</span></span>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="content-layer flex flex-col min-h-screen">
+        <!-- Top Announcement & Status Bar -->
+        <div class="bg-gradient-to-r from-red-950 via-accentRed to-red-950 text-white text-xs sm:text-sm font-semibold py-2.5 px-4 text-center border-b border-red-800 flex flex-wrap items-center justify-center gap-3">
+            <div class="bg-[#121318] border border-zinc-800 px-3.5 py-1 rounded-full text-xs text-white font-medium flex items-center gap-2 shadow-inner">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse"></span> Orders open 24/7
             </div>
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-400">
-                <a href="#weapons" class="hover:text-white transition">Weapons</a>
-                <a href="#sets" class="hover:text-white transition">Sets & Bundles</a>
-                <a href="#pets" class="hover:text-white transition">Pets</a>
-            </nav>
-            <div class="flex items-center space-x-4">
-                <button class="flex items-center space-x-2 bg-cardBorder text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:border-gray-500 transition">
-                    <i class="fa-solid fa-shopping-cart text-accentRed"></i>
-                    <span>Cart (0)</span>
-                </button>
+            
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-yellow-300 animate-pulse"></i> NOTICE: Crypto is our ONLY payment method accepted.</span>
+            
+            <div class="flex items-center gap-2">
+                <span class="bg-black/50 px-2.5 py-1 rounded-full text-xs text-green-400 font-mono flex items-center gap-1.5 border border-green-500/30">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span> <span id="online-counter">142</span> Online Now
+                </span>
+                <a href="https://discord.gg/MEJxmYJ4hH" target="_blank" class="bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded-full text-xs font-bold transition flex items-center gap-1.5 border border-red-500/50">
+                    <i class="fa-brands fa-discord text-indigo-400"></i> Join Discord
+                </a>
             </div>
         </div>
-    </header>
 
-    <!-- Main Store Content -->
-    <main class="content-layer max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full space-y-12">
-        
-        <!-- Hero Section -->
-        <div class="text-center space-y-4 py-6">
-            <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight">
-                ELITE <span class="text-accentRed">MM2</span> MARKETPLACE
-            </h1>
-            <p class="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-                Instant delivery, verified high-tier godlies, chromas, and collector bundles with realistic community market valuation.
-            </p>
+        <!-- Halloween Special Banner -->
+        <div class="bg-gradient-to-r from-zinc-900 via-red-950/80 to-zinc-900 border-b border-red-900/50 py-3.5 px-4 text-center text-xs sm:text-sm shadow-md">
+            <span class="text-orange-400 font-extrabold uppercase tracking-wider flex items-center justify-center gap-2">
+                <i class="fa-solid fa-ghost text-accentRed text-lg"></i> Halloween Special Ends: <span class="text-white bg-black/60 px-2 py-0.5 rounded border border-orange-500/40">In 1 Month</span>
+            </span>
+            <p class="text-zinc-300 text-xs mt-1 font-medium">Infos: All items & Robux delivered safely. Purchase bundles on the account you want!</p>
         </div>
 
-        <!-- Section: Weapons -->
-        <section id="weapons" class="space-y-6">
-            <div class="flex items-center justify-between border-b border-cardBorder pb-4">
-                <h2 class="text-2xl font-bold text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-gun text-accentRed"></i>
-                    <span>High-Tier Weapons & Chromas</span>
-                </h2>
-                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Updated Daily</span>
+        <!-- Navigation Header & Breadcrumb -->
+        <header class="max-w-5xl mx-auto w-full p-4 sm:p-6 flex flex-col gap-3">
+            <div class="text-xs text-zinc-400 font-medium flex items-center gap-2">
+                <span class="hover:text-white cursor-pointer" onclick="switchTab('store')">Home</span> <i class="fa-solid fa-chevron-right text-[10px]"></i> <span id="breadcrumb-current" class="text-white">Store</span>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-accentRed flex items-center justify-center text-white font-black text-xl glow-red">B</div>
+                    <div>
+                        <h1 class="font-extrabold text-xl tracking-tight text-white">Blox Market™</h1>
+                        <p class="text-xs text-zinc-400">Instant & Secure Roblox Delivery</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="switchTab('guides')" id="nav-guides-btn" class="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition border border-zinc-700 flex items-center gap-2">
+                        <i class="fa-solid fa-book-open text-accentRed"></i> Guides & Help
+                    </button>
+                    <a href="https://discord.gg/MEJxmYJ4hH" target="_blank" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow-lg shadow-indigo-500/20">
+                        <i class="fa-brands fa-discord text-lg"></i> Support Discord
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="max-w-3xl mx-auto w-full px-4 pb-16 flex-grow">
+            
+            <!-- STORE VIEW -->
+            <div id="tab-store" class="space-y-8">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                    <div class="bg-cardBg border border-zinc-800 hover:border-accentRed/60 transition p-4 rounded-2xl text-center group shadow-lg">
+                        <div class="text-2xl sm:text-3xl font-black text-accentRed tracking-tight group-hover:scale-105 transition transform">$3.00</div>
+                        <div class="text-xs font-semibold text-zinc-400 mt-1 uppercase tracking-wider">Robux / 1K</div>
+                    </div>
+                    <div class="bg-cardBg border border-zinc-800 hover:border-accentRed/60 transition p-4 rounded-2xl text-center group shadow-lg">
+                        <div class="text-2xl sm:text-3xl font-black text-accentRed tracking-tight group-hover:scale-105 transition transform">7.3K+</div>
+                        <div class="text-xs font-semibold text-zinc-400 mt-1 uppercase tracking-wider">Orders Completed</div>
+                    </div>
+                    <div class="bg-cardBg border border-zinc-800 hover:border-accentRed/60 transition p-4 rounded-2xl text-center group shadow-lg">
+                        <div class="text-2xl sm:text-3xl font-black text-accentRed tracking-tight group-hover:scale-105 transition transform flex items-center justify-center gap-1">4.9<i class="fa-solid fa-star text-yellow-400 text-lg"></i></div>
+                        <div class="text-xs font-semibold text-zinc-400 mt-1 uppercase tracking-wider">Store Rating</div>
+                    </div>
+                    <div class="bg-cardBg border border-zinc-800 hover:border-accentRed/60 transition p-4 rounded-2xl text-center group shadow-lg">
+                        <div class="text-2xl sm:text-3xl font-black text-accentRed tracking-tight group-hover:scale-105 transition transform">55.4K+</div>
+                        <div class="text-xs font-semibold text-zinc-400 mt-1 uppercase tracking-wider">Discord Members</div>
+                    </div>
+                </div>
+
+                <!-- Category Switcher Tabs -->
+                <div class="flex items-center gap-2 border-b border-zinc-800 pb-4 overflow-x-auto no-scrollbar">
+                    <button onclick="switchCategory('robux')" id="cat-btn-robux" class="bg-accentRed text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-coins"></i> Robux Store
+                    </button>
+                    <button onclick="switchCategory('mm2')" id="cat-btn-mm2" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 border border-zinc-800">
+                        <i class="fa-solid fa-skull"></i> Murder Mystery 2
+                    </button>
+                    <button onclick="switchCategory('adoptme')" id="cat-btn-adoptme" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 border border-zinc-800">
+                        <i class="fa-solid fa-paw"></i> Adopt Me
+                    </button>
+                </div>
+
+                <!-- CATEGORY 1: ROBUX STORE -->
+                <div id="category-robux" class="space-y-8">
+                    <!-- Custom Robux Calculator Widget (Above 5k) -->
+                    <div class="bg-cardBg border border-accentRed/50 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-accentRed text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Custom Amount</div>
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <span class="text-accentRed">🧮</span> Custom Robux Calculator (5,000+ Min)
+                        </h3>
+                        <p class="text-xs text-zinc-400 mb-5">Enter any specific amount above 5,000 Robux to instantly calculate your custom price ($3.00 / 1K rate).</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Robux Amount</label>
+                                <div class="relative">
+                                    <input type="number" id="custom-robux-input" min="5000" step="500" value="12500" oninput="calculateCustomPrice()" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm font-bold focus:outline-none focus:border-accentRed">
+                                    <span class="absolute right-4 top-3 text-xs text-zinc-500 font-bold">ROBUX</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Calculated Price</label>
+                                <div class="bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 flex items-center justify-between">
+                                    <span id="custom-price-display" class="text-xl font-black text-accentRed">$37.50</span>
+                                    <span class="text-xs text-zinc-400 font-mono">Tax Covered</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="buyCustomAmount()" class="w-full bg-accentRed hover:bg-accentRedHover text-white py-3.5 rounded-xl font-bold text-sm transition glow-red-hover flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-shopping"></i> Buy Custom Amount Now
+                        </button>
+                    </div>
+
+                    <!-- Halloween Specials Section -->
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-orange-500">🎃</span> Halloween Offers
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-cardBg border border-orange-500/40 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden group hover:border-accentRed transition shadow-lg">
+                                <div class="absolute top-0 right-0 bg-orange-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Halloween Special</div>
+                                <div>
+                                    <h4 class="font-extrabold text-white text-base mb-1">Headless Horseman Speciale</h4>
+                                    <p class="text-xs text-orange-300 font-semibold mb-4">31k Robux Tax Covered</p>
+                                </div>
+                                <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
+                                    <span class="text-xl font-black text-white">$50.00</span>
+                                    <button onclick="selectPackage('Headless Horseman Speciale', 50, '31k Robux Tax Covered')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-cardBg border border-orange-500/40 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden group hover:border-accentRed transition shadow-lg">
+                                <div class="absolute top-0 right-0 bg-orange-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Halloween Bundle</div>
+                                <div>
+                                    <h4 class="font-extrabold text-white text-base mb-1">Headless Horseman + Korblox Deathspeaker</h4>
+                                    <p class="text-xs text-orange-300 font-semibold mb-4">48k Robux Tax Covered</p>
+                                </div>
+                                <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
+                                    <span class="text-xl font-black text-white">$60.00</span>
+                                    <button onclick="selectPackage('Headless + Korblox Deathspeaker', 60, '48k Robux Tax Covered')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Standard & High Tier Robux Rates List -->
+                    <div class="bg-cardBg border border-cardBorder rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-accentRed">🪙</span> Current Robux Rates
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">15,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$45.00</span>
+                                    <button onclick="selectPackage('15,000 Robux', 45, '15,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">20,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$60.00</span>
+                                    <button onclick="selectPackage('20,000 Robux', 60, '20,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">30,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$90.00</span>
+                                    <button onclick="selectPackage('30,000 Robux', 90, '30,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">50,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$150.00</span>
+                                    <button onclick="selectPackage('50,000 Robux', 150, '50,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">100,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$300.00</span>
+                                    <button onclick="selectPackage('100,000 Robux', 300, '100,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">250,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$750.00</span>
+                                    <button onclick="selectPackage('250,000 Robux', 750, '250,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">500,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$1,500.00</span>
+                                    <button onclick="selectPackage('500,000 Robux', 1500, '500,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://img.icons8.com/color/1200/robux--v2.jpg" alt="Robux" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <h4 class="font-bold text-white">1,000,000 Robux</h4>
+                                        <p class="text-xs text-zinc-400">Roblox Plus Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$3,000.00</span>
+                                    <button onclick="selectPackage('1,000,000 Robux', 3000, '1,000,000 Robux')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORY 2: MURDER MYSTERY 2 (MM2) -->
+                <div id="category-mm2" class="hidden space-y-4">
+                    <div class="bg-cardBg border border-cardBorder rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-accentRed">🔪</span> Murder Mystery 2 Godlies & Weapons
+                        </h3>
+                        <div class="space-y-3">
+                            <!-- Seer -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/murder-mystery-2/images/e/ee/Seer.png/revision/latest/scale-to-width-down/175?cb=20210204082208" alt="Seer" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Seer</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 58</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Godly Knife • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$1.99</span>
+                                    <button onclick="selectPackage('Seer', 1.99, 'MM2 Item')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Blue Seer -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/murder-mystery-2/images/f/f3/1aad7564-2836-43c5-befb-686aedf7bf9b.png/revision/latest/scale-to-width-down/175?cb=20201211142043" alt="Blue Seer" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Blue Seer</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 42</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Godly Knife • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$2.49</span>
+                                    <button onclick="selectPackage('Blue Seer', 2.49, 'MM2 Item')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Darkbringer -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/murder-mystery-2/images/1/11/DarkbringerUpdated.png/revision/latest/scale-to-width-down/175?cb=20210820005220" alt="Darkbringer" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Darkbringer</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 71</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Godly Gun • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$3.99</span>
+                                    <button onclick="selectPackage('Darkbringer', 3.99, 'MM2 Item')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Fang -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/murder-mystery-2/images/8/84/FangUpdated.png/revision/latest/scale-to-width-down/175?cb=20210816021912" alt="Fang" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Fang</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 35</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Godly Knife • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$3.49</span>
+                                    <button onclick="selectPackage('Fang', 3.49, 'MM2 Item')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- MM2 Godly Bundle -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://media.karousell.com/media/photos/products/2024/10/13/shop_mm2_godly__roblox_murder__1728821841_413574eb_progressive" alt="MM2 Godly Bundle" class="w-12 h-12 rounded-lg object-cover bg-zinc-900 border border-zinc-800">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">MM2 Godly Bundle Set</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 89</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Top Godlies Bundle • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$14.99</span>
+                                    <button onclick="selectPackage('MM2 Godly Bundle Set', 14.99, 'MM2 Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORY 3: ADOPT ME (High Tiers & Potion Bundles 5x - 50x) -->
+                <div id="category-adoptme" class="hidden space-y-4">
+                    <div class="bg-cardBg border border-cardBorder rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-orange-400">🐾</span> Adopt Me High-Tier Pets & Potion Bundles
+                        </h3>
+                        <div class="space-y-3">
+                            <!-- Bat Dragon -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/items/v10/201/products/BatDragon%20Pet.png" alt="Bat Dragon" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Bat Dragon (FR)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 5</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Legendary Pet • Fly & Ride</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$27.99</span>
+                                    <button onclick="selectPackage('Bat Dragon (FR)', 27.99, 'Adopt Me Pet')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Giraffe -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/items/v10/201/products/Giraffe%20Pet.png" alt="Giraffe" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Giraffe (FR)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 7</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Legendary Pet • Fly & Ride</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$23.99</span>
+                                    <button onclick="selectPackage('Giraffe (FR)', 23.99, 'Adopt Me Pet')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Shadow Dragon -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/items/v10/201/products/ShadowDragon%20Pet.png" alt="Shadow Dragon" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Shadow Dragon</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 14</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Legendary Pet • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$19.99</span>
+                                    <button onclick="selectPackage('Shadow Dragon', 19.99, 'Adopt Me Pet')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Frost Dragon -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/items/v10/201/products/Frost%20Dragon%20Pet.png" alt="Frost Dragon" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Frost Dragon</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 8</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Legendary Pet • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$14.99</span>
+                                    <button onclick="selectPackage('Frost Dragon', 14.99, 'Adopt Me Pet')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Owl -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/items/v10/201/products/Owl%20Pet.png" alt="Owl" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Owl</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 22</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Legendary Pet • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$12.99</span>
+                                    <button onclick="selectPackage('Owl', 12.99, 'Adopt Me Pet')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Crow -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/items/v10/201/products/Crow%20Pet.png" alt="Crow" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Crow</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 11</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Legendary Pet • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$10.99</span>
+                                    <button onclick="selectPackage('Crow', 10.99, 'Adopt Me Pet')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Safari Egg -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/items/v10/201/products/Safari_Egg_upscaled1.png?w=1440" alt="Safari Egg" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Safari Egg</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 6</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Ultra-Rare Egg • Instant Trade Delivery</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$16.99</span>
+                                    <button onclick="selectPackage('Safari Egg', 16.99, 'Adopt Me Item')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- FLY POTIONS (Single & Bundles 5x, 10x, 20x, 50x) -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/a/a2/Fly_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523000938" alt="Fly Potion" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Fly Potion (1x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 150</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$1.49</span>
+                                    <button onclick="selectPackage('Fly Potion (1x)', 1.49, 'Adopt Me Potion')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/a/a2/Fly_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523000938" alt="Fly Potion Bundle 5x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Fly Potion Bundle (5x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 40</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$6.99</span>
+                                    <button onclick="selectPackage('Fly Potion Bundle (5x)', 6.99, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/a/a2/Fly_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523000938" alt="Fly Potion Bundle 10x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Fly Potion Bundle (10x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 25</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$12.99</span>
+                                    <button onclick="selectPackage('Fly Potion Bundle (10x)', 12.99, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/a/a2/Fly_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523000938" alt="Fly Potion Bundle 20x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Fly Potion Bundle (20x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 15</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$23.99</span>
+                                    <button onclick="selectPackage('Fly Potion Bundle (20x)', 23.99, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/a/a2/Fly_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523000938" alt="Fly Potion Bundle 50x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Fly Potion Bundle (50x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 8</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$54.99</span>
+                                    <button onclick="selectPackage('Fly Potion Bundle (50x)', 54.99, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <!-- RIDE POTIONS (Single & Bundles 5x, 10x, 20x, 50x) -->
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/1/18/Ride_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523001007" alt="Ride Potion" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Ride Potion (1x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 200</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$1.19</span>
+                                    <button onclick="selectPackage('Ride Potion (1x)', 1.19, 'Adopt Me Potion')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/1/18/Ride_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523001007" alt="Ride Potion Bundle 5x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Ride Potion Bundle (5x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 55</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$5.49</span>
+                                    <button onclick="selectPackage('Ride Potion Bundle (5x)', 5.49, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/1/18/Ride_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523001007" alt="Ride Potion Bundle 10x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Ride Potion Bundle (10x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 30</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$9.99</span>
+                                    <button onclick="selectPackage('Ride Potion Bundle (10x)', 9.99, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/1/18/Ride_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523001007" alt="Ride Potion Bundle 20x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Ride Potion Bundle (20x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 18</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$18.99</span>
+                                    <button onclick="selectPackage('Ride Potion Bundle (20x)', 18.99, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 border border-zinc-800/80 hover:border-accentRed/50 p-4 rounded-xl flex items-center justify-between transition group">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://static.wikia.nocookie.net/adoptme/images/1/18/Ride_Potion.png/revision/latest/scale-to-width-down/150?cb=20200523001007" alt="Ride Potion Bundle 50x" class="w-12 h-12 rounded-lg object-contain bg-zinc-900 border border-zinc-800 p-1">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-white">Ride Potion Bundle (50x)</h4>
+                                            <span class="text-[10px] bg-green-500/20 text-green-400 font-semibold px-2 py-0.5 rounded-full border border-green-500/30">In Stock: 10</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400">Consumable Potion Bundle • Instant Trade</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-black text-white">$44.99</span>
+                                    <button onclick="selectPackage('Ride Potion Bundle (50x)', 44.99, 'Adopt Me Potion Bundle')" class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition glow-red-hover">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- GUIDES & HELP VIEW -->
+            <div id="tab-guides" class="hidden space-y-6">
+                <div>
+                    <span class="text-accentRed font-bold text-xs uppercase tracking-wider">Guides</span>
+                    <h2 class="text-2xl font-black text-white mt-1 tracking-tight">Guides & Help</h2>
+                    <p class="text-xs text-zinc-400 mt-0.5">Everything you need to know about buying safely and securely.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-cardBorder py-6 text-center text-xs text-zinc-500">
+            &copy; 2026 Blox Market™. All rights reserved. Not affiliated with Roblox Corporation.
+        </footer>
+    </div>
+
+    <!-- PAYMENT MODAL -->
+    <div id="payment-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-cardBorder rounded-2xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto glow-red">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="text-center mb-6">
+                <span class="bg-accentRed/10 text-accentRed text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Secure Crypto Checkout</span>
+                <h3 id="modal-title" class="text-xl font-black text-white mt-2">Selected Package</h3>
+                <p id="modal-price" class="text-3xl font-black text-white mt-1">$0.00</p>
                 
-                <!-- Item Card 1 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-purple-950 text-purple-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-purple-800/50">Chroma Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (3)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Chroma Traveler's Gun</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">145,000</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$149.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
+                <div class="mt-3 inline-block bg-orange-500/10 border border-orange-500/50 px-4 py-2 rounded-xl">
+                    <p id="crypto-exact-display" class="text-base font-bold text-orange-400 tracking-wide">≈ 0.00000 BTC</p>
                 </div>
-
-                <!-- Item Card 2 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-purple-950 text-purple-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-purple-800/50">Chroma Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (5)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Chroma Evergun</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">56,500</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$59.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Item Card 3 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-purple-950 text-purple-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-purple-800/50">Chroma Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (4)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Chroma Evergreen</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">40,500</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$44.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Item Card 4 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-red-950 text-red-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-red-800/50">Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (8)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Gingerscope</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">15,500</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$24.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Item Card 5 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-red-950 text-red-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-red-800/50">Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (12)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Traveler's Gun</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">5,300</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$12.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Item Card 6 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-red-950 text-red-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-red-800/50">Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (15)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Evergun</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">3,450</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$8.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Item Card 7 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-red-950 text-red-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-red-800/50">Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (10)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Constellation</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">2,850</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$7.49</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Item Card 8 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-red-950 text-red-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-red-800/50">Godly</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (20)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Darkshot</h3>
-                        <p class="text-xs text-gray-400 mb-4">Community Value: <span class="text-gray-200 font-semibold">1,800</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$4.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Section: Sets & Bundles -->
-        <section id="sets" class="space-y-6">
-            <div class="flex items-center justify-between border-b border-cardBorder pb-4">
-                <h2 class="text-2xl font-bold text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-boxes-stacked text-accentRed"></i>
-                    <span>Sets & Bundles</span>
-                </h2>
-                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Best Value</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <!-- Set Card 1 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-blue-800/50">Bundle</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (2)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Traveler's Set</h3>
-                        <p class="text-xs text-gray-400 mb-2">Gun + Axe Combo</p>
-                        <p class="text-xs text-gray-400 mb-4">Value: <span class="text-gray-200 font-semibold">12,500</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$139.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Set Card 2 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-blue-800/50">Bundle</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (6)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Ever Set</h3>
-                        <p class="text-xs text-gray-400 mb-2">Evergun + Evergreen</p>
-                        <p class="text-xs text-gray-400 mb-4">Value: <span class="text-gray-200 font-semibold">7,600</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$14.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Set Card 3 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-blue-800/50">Bundle</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (11)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Dark Set</h3>
-                        <p class="text-xs text-gray-400 mb-2">Darkshot + Darksword</p>
-                        <p class="text-xs text-gray-400 mb-4">Value: <span class="text-gray-200 font-semibold">3,575</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$8.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Set Card 4 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-blue-800/50">Bundle</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (15)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Sakura Set</h3>
-                        <p class="text-xs text-gray-400 mb-2">Sakura + Blossom</p>
-                        <p class="text-xs text-gray-400 mb-4">Value: <span class="text-gray-200 font-semibold">1,810</span></p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$6.49</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Section: Pets -->
-        <section id="pets" class="space-y-6">
-            <div class="flex items-center justify-between border-b border-cardBorder pb-4">
-                <h2 class="text-2xl font-bold text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-paw text-accentRed"></i>
-                    <span>Collector Pets</span>
-                </h2>
-                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Rare & Vintage</span>
+            <!-- Countdown Timer Box (10 Minutes) -->
+            <div class="bg-red-950/40 border border-red-500/40 rounded-xl p-3 mb-6 text-center">
+                <p class="text-xs text-zinc-300 font-medium">Time remaining to complete payment:</p>
+                <div id="countdown-timer" class="text-2xl font-black text-accentRed mt-0.5">10:00</div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <!-- Pet Card 1 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-amber-950 text-amber-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-amber-800/50">Chroma Pet</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (7)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Chroma Fire Pet Set</h3>
-                        <p class="text-xs text-gray-400 mb-4">Complete 6-Pet Matching Chroma Variant Set</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$19.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Pet Card 2 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-amber-950 text-amber-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-amber-800/50">Vintage Pet</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (4)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Zombie Dog</h3>
-                        <p class="text-xs text-gray-400 mb-4">Highly Coveted Halloween Event Reward Pet</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$11.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
-                <!-- Pet Card 3 -->
-                <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 flex flex-col justify-between glow-red-hover transition duration-300">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-amber-950 text-amber-400 text-xs px-2.5 py-1 rounded-lg font-semibold border border-amber-800/50">Classic Pet</span>
-                            <span class="text-xs text-emerald-400 font-medium">In Stock (18)</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-1">Sammy</h3>
-                        <p class="text-xs text-gray-400 mb-4">Iconic Godly Pack Pet Companion</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-cardBorder">
-                        <span class="text-xl font-black text-white">$3.99</span>
-                        <button class="bg-accentRed hover:bg-accentRedHover text-white px-4 py-2 rounded-xl text-sm font-bold transition">Buy Now</button>
-                    </div>
-                </div>
-
+            <!-- Roblox Username Input -->
+            <div class="mb-5">
+                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Your Roblox Username</label>
+                <input type="text" id="roblox-username" placeholder="Enter your Roblox username..." class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accentRed">
             </div>
-        </section>
 
-    </main>
+            <!-- Choose Crypto Currency -->
+            <div class="mb-5">
+                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Select Preferred Cryptocurrency</label>
+                <select id="crypto-select" onchange="updateCryptoAddress()" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accentRed">
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="ltc">Litecoin (LTC)</option>
+                    <option value="sol">Solana (SOL)</option>
+                    <option value="usdc_eth">USDC (Ethereum / ARC)</option>
+                    <option value="usdc_sol">USDC (Solana)</option>
+                    <option value="usdt_eth">USDT (Ethereum / BNB)</option>
+                    <option value="usdt_tron">USDT (TRON)</option>
+                </select>
+            </div>
 
-    <!-- Footer -->
-    <footer class="content-layer border-t border-cardBorder bg-cardBg/30 mt-20 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
-            &copy; 2026 Blox Market. All rights reserved. Not affiliated with Roblox Corporation or MM2.
+            <!-- Wallet Address Box -->
+            <div class="bg-black/50 border border-zinc-800 rounded-xl p-4 mb-6">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Send exact amount to address:</span>
+                    <button onclick="copyAddress()" class="text-xs bg-accentRed/20 hover:bg-accentRed/30 text-accentRed font-bold px-2.5 py-1 rounded transition flex items-center gap-1">
+                        <i class="fa-regular fa-copy"></i> Copy
+                    </button>
+                </div>
+                <div id="wallet-address-display" class="font-mono text-xs text-zinc-200 break-all bg-black/70 p-2.5 rounded border border-zinc-900">bc1q8u3c6qun2ac3325hvv87y6x6frsacyq6md60c5</div>
+            </div>
+
+            <button onclick="simulatePayment()" class="w-full bg-accentRed hover:bg-accentRedHover text-white py-3.5 rounded-xl font-bold text-sm transition shadow-lg glow-red-hover">
+                I Have Sent Payment
+            </button>
         </div>
-    </footer>
+    </div>
 
+    <!-- CHECKING / VERIFYING PAYMENT MODAL -->
+    <div id="checking-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-cardBorder rounded-2xl max-w-md w-full p-6 text-center glow-red space-y-4">
+            <div class="w-12 h-12 border-4 border-accentRed border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <h3 class="text-xl font-black text-white">Checking Payment Status...</h3>
+            <p class="text-xs text-zinc-400">Verifying blockchain transaction and scanning network confirmations. Please do not close this window.</p>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="success-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-cardBorder rounded-2xl max-w-md w-full p-6 text-center glow-red">
+            <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">✓</div>
+            <h3 class="text-2xl font-black text-white mb-2">Order Registered!</h3>
+            <p class="text-sm text-zinc-300 mb-6 font-semibold text-accentRed">After payment confirmed you get the robux</p>
+            
+            <div class="bg-black/50 border border-zinc-800 rounded-xl p-4 mb-6">
+                <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider block mb-1">Your Order Number</span>
+                <div id="order-number-display" class="font-mono text-lg font-black text-accentRed">#BX-00000</div>
+            </div>
+
+            <button onclick="closeSuccessModal()" class="w-full bg-accentRed hover:bg-accentRedHover text-white py-3 rounded-xl font-bold text-sm transition">
+                Return to Store
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const cryptoAddresses = {
+            btc: "bc1q8u3c6qun2ac3325hvv87y6x6frsacyq6md60c5",
+            eth: "0x3EE6a36784566195ee459E8B7baCeCa207Aa73Fb",
+            ltc: "ltc1qlul89zeh92tmm7jddz3vn0yakcyywjjuelljve",
+            sol: "B24PuaBxpoKdyd3p5ScJ6xJR6QgTHtYQFWqApS3Jx1Ew",
+            usdc_eth: "0x3EE6a36784566195ee459E8B7baCeCa207Aa73Fb",
+            usdc_sol: "B24PuaBxpoKdyd3p5ScJ6xJR6QgTHtYQFWqApS3Jx1Ew",
+            usdt_eth: "0x3EE6a36784566195ee459E8B7baCeCa207Aa73Fb",
+            usdt_tron: "TN5zEJYqDqUnFU3MfoojeGZjjw2X2oFzzk"
+        };
+
+        const cryptoRates = {
+            btc: { rate: 65000, symbol: 'BTC', decimals: 5 },
+            eth: { rate: 2600, symbol: 'ETH', decimals: 4 },
+            ltc: { rate: 85, symbol: 'LTC', decimals: 3 },
+            sol: { rate: 150, symbol: 'SOL', decimals: 3 },
+            usdc_eth: { rate: 1, symbol: 'USDC', decimals: 2 },
+            usdc_sol: { rate: 1, symbol: 'USDC', decimals: 2 },
+            usdt_eth: { rate: 1, symbol: 'USDT', decimals: 2 },
+            usdt_tron: { rate: 1, symbol: 'USDT', decimals: 2 }
+        };
+
+        let currentSelectedPackage = null;
+        let currentPrice = 0;
+        let countdownInterval = null;
+        let generatedOrderNum = null;
+
+        function switchCategory(cat) {
+            const robuxSec = document.getElementById('category-robux');
+            const mm2Sec = document.getElementById('category-mm2');
+            const adoptmeSec = document.getElementById('category-adoptme');
+
+            const btnRobux = document.getElementById('cat-btn-robux');
+            const btnMm2 = document.getElementById('cat-btn-mm2');
+            const btnAdoptme = document.getElementById('cat-btn-adoptme');
+
+            robuxSec.classList.add('hidden');
+            mm2Sec.classList.add('hidden');
+            adoptmeSec.classList.add('hidden');
+
+            btnRobux.className = "bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 border border-zinc-800";
+            btnMm2.className = "bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 border border-zinc-800";
+            btnAdoptme.className = "bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 border border-zinc-800";
+
+            if (cat === 'robux') {
+                robuxSec.classList.remove('hidden');
+                btnRobux.className = "bg-accentRed text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 shadow-lg";
+            } else if (cat === 'mm2') {
+                mm2Sec.classList.remove('hidden');
+                btnMm2.className = "bg-accentRed text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 shadow-lg";
+            } else if (cat === 'adoptme') {
+                adoptmeSec.classList.remove('hidden');
+                btnAdoptme.className = "bg-accentRed text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 shadow-lg";
+            }
+        }
+
+        function calculateCustomPrice() {
+            const inputVal = parseInt(document.getElementById('custom-robux-input').value) || 0;
+            const price = (inputVal / 1000) * 3.0;
+            document.getElementById('custom-price-display').innerText = "$" + price.toFixed(2);
+        }
+
+        function buyCustomAmount() {
+            const inputVal = parseInt(document.getElementById('custom-robux-input').value) || 0;
+            if (inputVal < 5000) {
+                alert("Minimum custom order amount is 5,000 Robux.");
+                return;
+            }
+            const price = (inputVal / 1000) * 3.0;
+            selectPackage(inputVal.toLocaleString() + " Robux", price, "Roblox Plus Delivery (Custom)");
+        }
+
+        function selectPackage(name, price, details) {
+            currentSelectedPackage = name + " (" + details + ")";
+            currentPrice = price;
+            document.getElementById('modal-title').innerText = name + " (" + details + ")";
+            document.getElementById('modal-price').innerText = "$" + price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('payment-modal').classList.remove('hidden');
+            
+            updateCryptoAddress();
+            startTimer(10 * 60);
+        }
+
+        function closeModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+            clearInterval(countdownInterval);
+        }
+
+        function updateCryptoAddress() {
+            const selectKey = document.getElementById('crypto-select').value;
+            document.getElementById('wallet-address-display').innerText = cryptoAddresses[selectKey];
+            
+            const cryptoInfo = cryptoRates[selectKey];
+            const exactAmount = (currentPrice / cryptoInfo.rate).toFixed(cryptoInfo.decimals);
+            document.getElementById('crypto-exact-display').innerText = `≈ ${exactAmount} ${cryptoInfo.symbol}`;
+        }
+
+        function copyAddress() {
+            const addr = document.getElementById('wallet-address-display').innerText;
+            navigator.clipboard.writeText(addr);
+            alert("Copied wallet address to clipboard!");
+        }
+
+        function startTimer(duration) {
+            clearInterval(countdownInterval);
+            let timer = duration;
+            const timerDisplay = document.getElementById('countdown-timer');
+            
+            countdownInterval = setInterval(() => {
+                let minutes = parseInt(timer / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                timerDisplay.textContent = minutes + ":" + seconds;
+                if (--timer < 0) {
+                    clearInterval(countdownInterval);
+                    timerDisplay.textContent = "EXPIRED";
+                }
+            }, 1000);
+        }
+
+        function simulatePayment() {
+            const username = document.getElementById('roblox-username').value.trim();
+            if (!username) {
+                alert("Please enter your Roblox username!");
+                return;
+            }
+
+            const cryptoSelect = document.getElementById('crypto-select');
+            const selectedCryptoText = cryptoSelect.options[cryptoSelect.selectedIndex].text;
+
+            closeModal();
+            document.getElementById('checking-modal').classList.remove('hidden');
+
+            generatedOrderNum = "#BX-" + Math.floor(100000 + Math.random() * 900000);
+            
+            let orders = JSON.parse(localStorage.getItem('bloxmarket_orders') || '[]');
+            const newOrder = {
+                id: generatedOrderNum,
+                username: username,
+                package: currentSelectedPackage,
+                price: currentPrice,
+                status: 'Pending Verification',
+                date: new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString()
+            };
+            orders.unshift(newOrder);
+            localStorage.setItem('bloxmarket_orders', JSON.stringify(orders));
+
+            const webhookUrl = "https://discord.com/api/webhooks/1555223645092319462/VG1snbVJxyNmftH94TKfNCrJJH33kPuOVD-Ehv_yn8l6cSO0cARsddRI3izboqT35mSr";
+            const payload = {
+                content: "🔔 **New Order Received!** <@1052848419137024000> (ltcsin)",
+                embeds: [{
+                    title: "🛒 New Purchase Pending",
+                    color: 15008516,
+                    fields: [
+                        { name: "Order ID", value: generatedOrderNum, inline: true },
+                        { name: "Roblox Username", value: username, inline: true },
+                        { name: "Package", value: currentSelectedPackage, inline: false },
+                        { name: "Total Price", value: "$" + currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}), inline: true },
+                        { name: "Payment Method", value: selectedCryptoText, inline: true }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(error => {
+                console.error("Error sending webhook notification:", error);
+            });
+
+            setTimeout(() => {
+                document.getElementById('checking-modal').classList.add('hidden');
+                document.getElementById('order-number-display').innerText = generatedOrderNum;
+                document.getElementById('success-modal').classList.remove('hidden');
+            }, 3000);
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+        function switchTab(tabName) {
+            const storeTab = document.getElementById('tab-store');
+            const guidesTab = document.getElementById('tab-guides');
+            const breadcrumb = document.getElementById('breadcrumb-current');
+
+            if (tabName === 'guides') {
+                storeTab.classList.add('hidden');
+                guidesTab.classList.remove('hidden');
+                breadcrumb.innerText = 'Guides';
+            } else {
+                guidesTab.classList.add('hidden');
+                storeTab.classList.remove('hidden');
+                breadcrumb.innerText = 'Store';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        setInterval(() => {
+            const counterEl = document.getElementById('online-counter');
+            if (counterEl) {
+                let current = parseInt(counterEl.innerText);
+                let change = Math.floor(Math.random() * 5) - 2;
+                counterEl.innerText = Math.max(120, Math.min(180, current + change));
+            }
+        }, 4000);
+
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for (let i = 0; i < 40; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                speedY: (Math.random() * 0.5 - 0.25),
+                speedX: (Math.random() * 0.5 - 0.25),
+                alpha: Math.random() * 0.5 + 0.1
+            });
+        }
+
+        function animateBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(229, 9, 20, ${p.alpha})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(animateBg);
+        }
+        animateBg();
+        calculateCustomPrice();
+    </script>
 </body>
 </html>
